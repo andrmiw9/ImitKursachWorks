@@ -1,0 +1,20 @@
+       SIMULATE
+       
+       
+       
+       
+       GENERATE 93,,120,50
+       QUEUE Q1
+       SEIZE 
+       
+       
+       GENERATE 110,10,,32
+       
+       
+       
+       
+       
+       GENERATE 145,18,,20
+       
+       
+       

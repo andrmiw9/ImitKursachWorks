@@ -1,0 +1,364 @@
+    Student GPSS/H Release 3.70 (CT256)     29 May 2020   14:22:13     File: kursdop.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+        1     1                 	SIMULATE
+        2     2                 	REALLOCATE COM,32719
+        3     3                  
+        4     4                 FARM	FUNCTION RN1,D2
+        5     5                 .7,23/1,28
+        6     6                  
+        7     7                 TK3	FUNCTION RN1,D2
+        8     8                 .9,2/1,1
+        9     9                  
+       10    10                 TERM	FUNCTION P1,E3
+       11    11                 1,TERM1/2,TERM2/3,TERM3
+       12    12                  
+       13    13                 TKMM	FUNCTION P1,E3
+       14    14                 1,4/2,3/3,FN$TK3
+       15    15                  
+       16    16                 CNTARM	FUNCTION P1,E3
+       17    17                 1,ZARM1/2,ZARM2/3,ZARM3
+       18    18                  
+       19    19                 CNTCVK	FUNCTION P1,E3
+       20    20                 1,ZCVK1/2,ZCVK2/3,ZCVK3
+       21    21                  
+       22    22                 COUNT1	FUNCTION P2,E2
+       23    23                 0,FN$CNTARM/1,FN$CNTCVK
+       24    24                  
+       25    25                 CVKPR	FUNCTION P1,D3
+       26    26                 1,9/2,8/3,7
+       27    27                  
+       28    28                 TERMPR	FUNCTION P2,D2
+       29    29                 0,30/1,25
+       30    30                  
+       31    31                 	INITIAL X$EXIT,1100
+       32    32                 	INITIAL X$ENDOBSL,0 конец обслуживания заявок
+       33    33                 	INITIAL X$ZARM1,0
+       34    34                 	INITIAL X$ZARM2,0
+       35    35                 	INITIAL X$ZARM3,0
+       36    36                 	INITIAL X$ZCVK1,0
+       37    37                 	INITIAL X$ZCVK2,0
+       38    38                 	INITIAL X$ZCVK3,0
+       39    39                  
+       40    40              1  	GENERATE 140,35,,27
+       41    41              2  	ASSIGN 1,1
+       42    42              3  TERM1	PRIORITY FN$TERMPR
+       43    43              4  	ASSIGN 2,0
+       44    44              5  	QUEUE QTERM1
+       45    45              6  	SEIZE STERM1
+       46    46              7  	DEPART QTERM1
+       47    47              8  	ADVANCE 30,10
+       48    48              9  	RELEASE STERM1
+       49    49             10  	SAVEVALUE EXIT-,1
+       50    50             11  	TEST E P3,0,DEL
+       51    51                  
+       52    52             12  ARM1	PRIORITY 20
+       53    53             13  	QUEUE QARM1
+       54    54             14  	SEIZE SARM1
+       55    55             15  	DEPART QARM1
+       56    56             16  	ADVANCE FN$FARM
+
+    Student GPSS/H Release 3.70 (CT256)     29 May 2020   14:22:13     File: kursdop.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+       57    57             17  	RELEASE SARM1
+       58    58             18  	TRANSFER .3,TERM1,KMMIN	
+       59    59                  
+       60    60             19  	GENERATE 180,,,34
+       61    61             20  	ASSIGN 1,2
+       62    62             21  TERM2	PRIORITY FN$TERMPR
+       63    63             22  	ASSIGN 2,0
+       64    64             23  	QUEUE QTERM2
+       65    65             24  	SEIZE STERM2
+       66    66             25  	DEPART QTERM2
+       67    67             26  	ADVANCE 30,15
+       68    68             27  	RELEASE STERM2
+       69    69             28  	SAVEVALUE EXIT-,1
+       70    70             29  	TEST E P3,0,DEL
+       71    71                  
+       72    72             30  ARM2	PRIORITY 15
+       73    73             31  	QUEUE QARM2
+       74    74             32  	SEIZE SARM2
+       75    75             33  	DEPART QARM2
+       76    76             34  	ADVANCE FN$FARM
+       77    77             35  	RELEASE SARM2
+       78    78             36  	TRANSFER .3,TERM2,KMMIN
+       79    79                  
+       80    80             37  	GENERATE 220,,,25
+       81    81             38  	ASSIGN 1,3
+       82    82             39  TERM3	PRIORITY FN$TERMPR
+       83    83             40  	ASSIGN 2,0
+       84    84             41  	QUEUE QTERM3
+       85    85             42  	SEIZE STERM3
+       86    86             43  	DEPART QTERM3
+       87    87             44  	ADVANCE 35,12
+       88    88             45  	RELEASE STERM3
+       89    89             46  	SAVEVALUE EXIT-,1
+       90    90             47  	TEST E P3,0,DEL
+       91    91                  
+       92    92             48  ARM3	PRIORITY 10
+       93    93             49  	QUEUE QARM3
+       94    94             50  	SEIZE SARM3
+       95    95             51  	DEPART QARM3
+       96    96             52  	ADVANCE FN$FARM
+       97    97             53  	RELEASE SARM3
+       98    98             54  	TRANSFER .3,TERM3,KMMIN
+       99    99                  
+      100   100             55  KMMIN	LINK CUKMM,FIFO,KMM	
+      101   101                  
+      102   102             56  KMM	SEIZE SKMM
+      103   103             57  	ADVANCE FN$TKMM
+      104   104             58  	RELEASE SKMM
+      105   105             59  	SAVEVALUE FN$COUNT1+,1
+      106   106             60  	UNLINK CUKMM,KMM,1
+      107   107             61  	TEST E P2,0,FN$TERM
+      108   108                  
+      109   109             62  CVK	QUEUE QCVK
+      110   110             63  	SEIZE SCVK
+      111   111             64  	DEPART QCVK
+      112   112             65  	ADVANCE 36,5
+
+    Student GPSS/H Release 3.70 (CT256)     29 May 2020   14:22:13     File: kursdop.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+      113   113             66  	RELEASE SCVK
+      114   114             67  	PRIORITY FN$CVKPR
+      115   115             68  	ASSIGN 2,1
+      116   116             69  	SAVEVALUE ENDOBSL+,1
+      117   117             70  	TEST E X$ENDOBSL,5,KMMIN
+      118   118             71  	SAVEVALUE ENDOBSL,0
+      119   119             72  	ASSIGN 3,1
+      120   120             73  	TRANSFER ,KMMIN
+      121   121                  
+      122   122             74  DEL	TERMINATE
+      123   123                  
+      124   124             75  	GENERATE ,,,1
+      125   125             76  	TEST E X$EXIT,0
+      126   126             77  	TERMINATE 1
+      127   127                 	START 1
+      128   128                  
+      129   129                 	END
+
+Entity Dictionary (in ascending order by entity number; "*" => value conflict.)
+
+       Facilities: 1=STERM1        2=SARM1         3=STERM2        4=SARM2         5=STERM3        6=SARM3         
+                   7=SKMM          8=SCVK
+
+           Queues: 1=QTERM1        2=QARM1         3=QTERM2        4=QARM2         5=QTERM3        6=QARM3         
+                   7=QCVK
+
+        Functions: 1=FARM          2=TK3           3=TERM          4=TKMM          5=CNTARM        6=CNTCVK        
+                   7=COUNT1        8=CVKPR         9=TERMPR
+
+ Fullword Savexes: 1=ZARM1         2=ZARM2         3=ZARM3         4=ZCVK1         5=ZCVK2         6=ZCVK3         
+                   7=EXIT          8=ENDOBSL
+
+      User Chains: 1=CUKMM
+
+       Parameters: 1               2               3
+
+   Random Numbers: 1
+
+
+*** Warning: The following entities have been defined but not explicitly referenced:
+
+           Blocks:  ARM1      ARM2      ARM3      CVK     
+
+Symbol   Value   EQU Defns  Context      References by Statement Number
+ 
+TERM1        3              Absolute        11
+TERM2       21              Absolute        11
+TERM3       39              Absolute        11
+ZARM1        1              Absolute        17
+ZARM2        2              Absolute        17
+ZARM3        3              Absolute        17
+ZCVK1        4              Absolute        20
+ZCVK2        5              Absolute        20
+ZCVK3        6              Absolute        20
+ 
+ARM1        12          52  Block       
+ARM2        30          72  Block       
+ARM3        48          92  Block       
+CVK         62         109  Block       
+DEL         74         122  Block           50    70    90
+KMM         56         102  Block          100   106
+KMMIN       55         100  Block           58    78    98   117   120
+TERM1        3          42  Block           58
+TERM2       21          62  Block           78
+TERM3       39          82  Block           98
+ 
+SARM1        2              Facility        54    57
+SARM2        4              Facility        74    77
+SARM3        6              Facility        94    97
+SCVK         8              Facility       110   113
+SKMM         7              Facility       102   104
+STERM1       1              Facility        45    48
+STERM2       3              Facility        65    68
+STERM3       5              Facility        85    88
+ 
+QARM1        2              Queue           53    55
+QARM2        4              Queue           73    75
+QARM3        6              Queue           93    95
+QCVK         7              Queue          109   111
+QTERM1       1              Queue           44    46
+QTERM2       3              Queue           64    66
+QTERM3       5              Queue           84    86
+ 
+CNTARM       5          16  Function        23
+CNTCVK       6          19  Function        23
+COUNT1       7          22  Function       105
+CVKPR        8          25  Function       114
+FARM         1           4  Function        56    76    96
+TERM         3          10  Function       107
+TERMPR       9          28  Function        42    62    82
+TK3          2           7  Function        14
+TKMM         4          13  Function       103
+ 
+ENDOBSL      8              Fullword Svx    32   116   117   118
+EXIT         7              Fullword Svx    31    49    69    89   125
+ZARM1        1              Fullword Svx    33
+ZARM2        2              Fullword Svx    34
+ZARM3        3              Fullword Svx    35
+ZCVK1        4              Fullword Svx    36
+ZCVK2        5              Fullword Svx    37
+ZCVK3        6              Fullword Svx    38
+ 
+CUKMM        1              User Chain     100   106
+
+Symbol   Value   EQU Defns  Context      References by Statement Number
+ 
+1            1              Parameter       10    13    16    19    25    41    61    81
+2            2              Parameter       22    28    43    63    83   107   115
+3            3              Parameter       50    70    90   119
+ 
+1            1              Random Nmbr      4     7
+
+
+
+Storage Requirements (Bytes)
+
+Compiled Code:     3182
+Compiled Data:      304
+Miscellaneous:        0
+Entities:          1568
+Common:           32720
+-----------------------
+Total:            37774
+
+
+
+GPSS/H Model Size:
+
+Control Statements     20
+Blocks                 77
+
+
+
+Simulation begins.
+
+Relative Clock: 12008.9054   Absolute Clock: 12008.9054
+
+
+
+Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total
+1                    27  11                  394  TERM2               392  31                  360  41                  323 
+2                    27  ARM1                376  22                  392  32                  360  42                  323 
+TERM1               403  13                  376  23          7       392  33                  360  43                  323 
+4                   403  14                  376  24                  385  34          1       360  44          1       323 
+5           8       403  15                  376  25                  385  35                  359  45                  322 
+6                   395  16                  376  26          1       385  36                  359  46                  322 
+7                   395  17                  376  27                  384  37                   25  47                  322 
+8           1       395  18                  376  28                  384  38                   25  ARM3                304 
+9                   394  19                   34  29                  384  TERM3               323  49                  304 
+10                  394  20                   34  ARM2                360  40                  323  50                  304 
+
+
+
+Block Current     Total  Block Current     Total  Block Current     Total  
+51                  304  61                  648  71                   64 
+52          1       304  CVK         5       327  72                   64 
+53                  303  63                  322  73                   64 
+54                  303  64                  322  DEL                  60 
+KMMIN               648  65          1       322  75                    1 
+KMM                 648  66                  321  76                    1 
+57                  648  67                  321  77                    1 
+58                  648  68                  321 
+59                  648  69                  321 
+60                  648  70                  321 
+
+
+
+          --Avg-Util-During--                                                               
+Facility  Total  Avail  Unavl     Entries    Average   Current  Percent  Seizing  Preempting
+           Time   Time   Time               Time/Xact   Status   Avail     Xact      Xact   
+  STERM1  0.984                       395      29.923    AVAIL               55 
+   SARM1  0.770                       376      24.596    AVAIL                  
+  STERM2  0.966                       385      30.126    AVAIL               87 
+   SARM2  0.732                       360      24.408    AVAIL               79 
+  STERM3  0.938                       323      34.861    AVAIL               67 
+   SARM3  0.620                       304      24.507    AVAIL               11 
+    SKMM  0.164                       648       3.031    AVAIL                  
+    SCVK  0.967                       322      36.054    AVAIL               56 
+
+
+
+   Queue     Maximum      Average       Total        Zero     Percent      Average      $Average     Qtable     Current
+            Contents     Contents      Entries     Entries     Zeros      Time/Unit    Time/Unit     Number    Contents
+  QTERM1          23       13.046         403           5        1.2       388.751       393.635                      8
+   QARM1           1        0.040         376         271       72.1         1.279         4.578                      0
+  QTERM2          25       11.855         392           8        2.0       363.163       370.729                      7
+   QARM2           3        0.093         360         224       62.2         3.110         8.234                      0
+  QTERM3          17        6.242         323          16        5.0       232.056       244.150                      0
+   QARM3           1        0.004         304         284       93.4         0.162         2.468                      0
+    QCVK          11        5.142         327           9        2.8       188.848       194.193                      5
+
+User Chain   Entries    Average      Average     Current     Maximum
+                       Time/Xact    Contents    Contents    Contents
+   CUKMM          66       1.639       0.009           0           2 
+
+
+
+Non-zero Fullword Savevalues:  (NAME : VALUE)
+
+   ZARM1:         115,    ZARM2:         114,    ZARM3:          98,    ZCVK1:         115,    ZCVK2:         113,
+   ZCVK3:          93,  ENDOBSL:           1
+
+
+
+  Random    Antithetic     Initial     Current      Sample   Chi-Square
+  Stream      Variates    Position    Position       Count   Uniformity
+       1           OFF      100000      103722        3722      0.79
+
+
+
+Status of Common Storage
+
+   28568 bytes available
+    4152 in use
+    9528 used (max)
+
+Simulation complete.  Absolute Clock: 12008.9054
+
+
+
+Total Block Executions: 25100
+
+Blocks / second:        8995449
+
+Microseconds / Block:   0.11
+
+
+
+Elapsed Time Used (Sec)
+ 
+Pass1:           0.00
+Sym/Xref         0.00
+Pass2:           0.00
+Load/Ctrl:       0.00
+Execution:       0.00
+Output:          0.00
+---------------------
+Total:           0.00
