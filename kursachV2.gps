@@ -17,4 +17,7 @@
        GENERATE 145,18,,20
        
        
-       
+       GENERATE 12000
+       TERMINATE 1
+       START 1
+       END
