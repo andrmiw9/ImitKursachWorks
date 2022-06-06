@@ -1,0 +1,1 @@
+gpssh.exe vlad_course.gps

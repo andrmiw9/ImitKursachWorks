@@ -90,3 +90,13 @@ GENERATE 12000
 TERMINATE 1
 START 1
 END
+
+
+
+
+PRIORITY fawfafawfafafawfafawfawf
+
+ASSIGN 3,1 также
+
+
+ TEST GE (ARMOB),800

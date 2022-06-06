@@ -1,74 +1,342 @@
-    Student GPSS/H Release 3.70 (CT256)     30 May 2022   13:42:26     File: kursachV2.gps
+    Student GPSS/H Release 3.70 (CT256)      1 Jun 2022   20:49:34     File: kursachV2.gps
 
     Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
  
         1     1                        SIMULATE
-        2     2                        
+        2     2                        REALLOCATE COM,30000
         3     3                        
-        4     4                        
-        5     5                        
-        6     6              1         GENERATE 93,,120,50
-        7     7              2  T1     QUEUE Q1
-        8     8              3         SEIZE 
-                                             +
-*** ERROR  47 - Facility number unspecified
- 
+        4     4                        INITIAL X$ARMOB,0 счетчик обраб-ых первым и вторым арм
+        5     5                        INITIAL X$ARM1,0 счетчик обраб-ых на цвк из первого т-ала
+        6     6                        INITIAL X$ARM2,0 счетчик обраб-ых на цвк из второго т-ала
+        7     7                        INITIAL X$ARM3,0 счетчик обраб-ых на цвк из третього т-ала
+        8     8                        INITIAL X$CVKCOUNT,0 счетчик обраб-ых на цвк
         9     9                        
-       10    10                        
-       11    11              4         GENERATE 110,10,,32
-       12    12                 T2  
-                                    +
-*** ERROR  4 - Unrecognizable statement
+       10    10                 ARMTIME FUNCTION RN1,D2
+       11    11                 0.2,17/1,30
+       12    12                  
+       13    13                  
+       14    14                 TOBKMM FUNCTION P1,E3
+       15    15                 1,FN$T1KMM/2,FN$T2KMM/3,2
+       16    16                  
+       17    17                 T1KMM FUNCTION RN1,D2
+       18    18                 0.3,4/1,2
+       19    19                  
+       20    20                 T2KMM FUNCTION RN1,D2
+       21    21                 0.4,3/1,1
+       22    22                  
+       23    23                  
+       24    24                 FMETKI FUNCTION P1,E3
+       25    25                 1,TERM1/2,TERM2/3,TERM3
+       26    26                       
+       27    27                 PLUSER FUNCTION P1,E3
+       28    28                 1,ARM1/2,ARM2/3,ARM3
+       29    29                      
+       30    30                 CVKPRIOR FUNCTION P1,E3
+       31    31                 1,20/2,30/3,40     
+       32    32                  
+       33    33                        
+       34    34              1         GENERATE 93,,120,50
+       35    35              2  TERM1  QUEUE QTERM1
+       36    36              3         SEIZE RTERM1
+       37    37              4         DEPART QTERM1
+       38    38              5         ADVANCE 30,10
+       39    39              6         RELEASE RTERM1
+       40    40                        
+       41    41              7         PRIORITY 50
+       42    42              8         TEST NE P2,1,TST1   если были на цвк, то уходим на проверку
+       43    43              9  ARM1   ASSIGN 2,0 обнуляем метку цвк
+       44    44             10         QUEUE QARM1
+       45    45             11         SEIZE RARM1
+       46    46             12         DEPART QARM1
+       47    47             13         ADVANCE FN$ARMTIME
+       48    48             14         RELEASE RARM1
+       49    49             15         SAVEVALUE ARMOB+,1
+       50    50             16         ASSIGN 1,1
+       51    51             17         TRANSFER .7,KMM,TERM1
+       52    52                        
+       53    53             18  TST1   PRIORITY 60	
+       54    54             19         TEST GE Q$QARM1,1,ARM1 если очередь содержит хотя бы одну з-ку
+       55    55             20         TERMINATE
+       56    56                        
+
+    Student GPSS/H Release 3.70 (CT256)      1 Jun 2022   20:49:34     File: kursachV2.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
  
-       13    13                        
-       14    14                        
-       15    15                        
-       16    16                        
-       17    17              5         GENERATE 145,18,,20
-       18    18                 T3       
-                                         +
-*** ERROR  4 - Unrecognizable statement
+       57    57                        
+       58    58             21         GENERATE 110,10,,32
+       59    59             22  TERM2  QUEUE QTERM2
+       60    60             23         SEIZE RTERM2
+       61    61             24         DEPART QTERM2
+       62    62             25         ADVANCE 35,12
+       63    63             26         RELEASE RTERM2
+       64    64                        
+       65    65             27         PRIORITY 50
+       66    66             28         TEST NE P2,1,TST2   если были на цвк, то уходим на проверку
+       67    67             29  ARM2   ASSIGN 2,0 обнуляем метку цвк
+       68    68             30         QUEUE QARM2
+       69    69             31         SEIZE RARM2
+       70    70             32         DEPART QARM2
+       71    71             33         ADVANCE FN$ARMTIME
+       72    72             34         RELEASE RARM2
+       73    73             35         SAVEVALUE ARMOB+,1
+       74    74             36         ASSIGN 1,2
+       75    75             37         TRANSFER .7,KMM,TERM2
+       76    76                        
+       77    77             38  TST2   PRIORITY 60
+       78    78             39         TEST GE Q$QARM2,1,ARM2 если очередь содержит хотя бы одну з-ку
+       79    79             40         TERMINATE
+       80    80                        
+       81    81                        
+       82    82             41         GENERATE 145,18,,20
+       83    83             42  TERM3  QUEUE QTERM3
+       84    84             43         SEIZE RTERM3
+       85    85             44         DEPART QTERM3
+       86    86             45         ADVANCE 27,5
+       87    87             46         RELEASE RTERM3       
+       88    88                        
+       89    89             47         PRIORITY 50
+       90    90             48         TEST NE P2,1,TST3   если были на цвк, то уходим на проверку
+       91    91             49  ARM3   ASSIGN 2,0 обнуляем метку цвк
+       92    92             50         QUEUE QARM3
+       93    93             51         SEIZE RARM3
+       94    94             52         DEPART QARM3
+       95    95             53         RELEASE RARM3
+       96    96             54         ASSIGN 1,3
+       97    97             55         TRANSFER .7,KMM,TERM3
+       98    98                        
+       99    99             56  TST3   PRIORITY 60 восстановление приор-а если пришли из цвк
+      100   100             57         TEST GE Q$QARM3,1,ARM3 если очередь содержит хотя бы одну з-ку
+      101   101             58         TERMINATE
+      102   102                        
+      103   103                        
+      104   104             59  KMM    QUEUE QKMM
+      105   105             60         SEIZE RKMM
+      106   106             61         DEPART QKMM
+      107   107                        
+      108   108             62         ADVANCE FN$TOBKMM
+      109   109             63         RELEASE RKMM
+      110   110             64         TEST E  P2,1,CVK уходим на цвк если не были
+      111   111             65         PRIORITY 60
+      112   112             66         TRANSFER ,FN$FMETKI
+
+    Student GPSS/H Release 3.70 (CT256)      1 Jun 2022   20:49:34     File: kursachV2.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
  
-       19    19                        
-       20    20                        
-       21    20                 	END		(COMPILER-GENERATED STATEMENT.  YOU FORGOT THIS.)
- 
-*** WARNING  5 - Unexpected end-of-file in source stream
- 
+      113   113                        
+      114   114                        
+      115   115             67  CVK    PRIORITY FN$CVKPRIOR
+      116   116             68         QUEUE QCVK
+      117   117             69         SEIZE RCVK
+      118   118             70         DEPART QCVK
+      119   119             71         ADVANCE 45,10
+      120   120             72         RELEASE RCVK
+      121   121             73         ASSIGN 2,1 помечаем что были на ЦВК
+      122   122                        
+      123   123             74         SAVEVALUE FN$PLUSER+,1
+      124   124             75         SAVEVALUE CVKCOUNT+,1
+      125   125                        
+      126   126             76         TRANSFER ,KMM
+      127   127                        
+      128   128                        
+      129   129                        
+      130   130             77         GENERATE ,,,1
+      131   131             78         TEST GE X$ARMOB,800
+      132   132             79         TERMINATE 1
+      133   133                        START 1
+      134   134                        END
 
 Entity Dictionary (in ascending order by entity number; "*" => value conflict.)
 
-           Queues: 1
+       Facilities: 1=RTERM1        2=RARM1         3=RTERM2        4=RARM2         5=RTERM3        6=RARM3         
+                   7=RKMM          8=RCVK
 
+           Queues: 1=QTERM1        2=QARM1         3=QTERM2        4=QARM2         5=QTERM3        6=QARM3         
+                   7=QKMM          8=QCVK
 
-*** Warning: The following entities have been defined but not explicitly referenced:
+        Functions: 1=ARMTIME       2=TOBKMM        3=T1KMM         4=T2KMM         5=FMETKI        6=PLUSER        
+                   7=CVKPRIOR
 
-           Blocks:  T1      
+ Fullword Savexes: 1=ARMOB         2=CVKCOUNT      9=ARM1          29=ARM2         49=ARM3
+
+       Parameters: 1               2
+
+   Random Numbers: 1
 
 Symbol   Value   EQU Defns  Context      References by Statement Number
  
-T1           2           7  Block       
+ARM1         9              Absolute        28
+ARM2        29              Absolute        28
+ARM3        49              Absolute        28
+TERM1        2              Absolute        25
+TERM2       22              Absolute        25
+TERM3       42              Absolute        25
  
-1            1              Queue            7
-
-
-
+ARM1         9          43  Block           54
+ARM2        29          67  Block           78
+ARM3        49          91  Block          100
+CVK         67         115  Block          110
+KMM         59         104  Block           51    75    97   126
+TERM1        2          35  Block           51
+TERM2       22          59  Block           75
+TERM3       42          83  Block           97
+TST1        18          53  Block           42
+TST2        38          77  Block           66
+TST3        56          99  Block           90
+ 
+RARM1        2              Facility        45    48
+RARM2        4              Facility        69    72
+RARM3        6              Facility        93    95
+RCVK         8              Facility       117   120
+RKMM         7              Facility       105   109
+RTERM1       1              Facility        36    39
+RTERM2       3              Facility        60    63
+RTERM3       5              Facility        84    87
+ 
+QARM1        2              Queue           44    46    54
+QARM2        4              Queue           68    70    78
+QARM3        6              Queue           92    94   100
+QCVK         8              Queue          116   118
+QKMM         7              Queue          104   106
+QTERM1       1              Queue           35    37
+QTERM2       3              Queue           59    61
+QTERM3       5              Queue           83    85
+ 
+ARMTIME      1          10  Function        47    71
+CVKPRIOR     7          30  Function       115
+FMETKI       5          24  Function       112
+PLUSER       6          27  Function       123
+T1KMM        3          17  Function        15
+T2KMM        4          20  Function        15
+TOBKMM       2          14  Function       108
+ 
+ARM1         9              Fullword Svx     5
+ARM2        29              Fullword Svx     6
+ARM3        49              Fullword Svx     7
+ARMOB        1              Fullword Svx     4    49    73   131
+CVKCOUNT     2              Fullword Svx     8   124
+ 
+1            1              Parameter       14    24    27    30    50    74    96
+2            2              Parameter       42    43    66    67    90    91   110   121
+ 
+1            1              Random Nmbr     10    17    20
+
 Storage Requirements (Bytes)
 
-Compiled Code:      146
-Compiled Data:      120
+Compiled Code:     2692
+Compiled Data:      256
 Miscellaneous:        0
-Entities:          1616
-Common:           10000
+Entities:          1511
+Common:           30000
 -----------------------
-Total:            11882
+Total:            34459
 
 
 
 GPSS/H Model Size:
 
-Control Statements      2
-Blocks                  5
+Control Statements     15
+Blocks                 79
 
 
-3 Syntactic errors
+
+Simulation begins.
+
+Relative Clock: 17707.7106   Absolute Clock: 17707.7106
+
+
+
+Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total
+1                    50  11                  302  21                   32  31                  498  41                   20 
+TERM1               303  12                  302  TERM2      30       529  32                  498  TERM3      18       664 
+3                   303  13                  302  23                  499  33                  498  43                  646 
+4                   303  14                  302  24                  499  34                  498  44                  646 
+5           1       303  15                  302  25          1       499  35                  498  45          1       646 
+6                   302  16                  302  26                  498  36                  498  46                  645 
+7                   302  17                  302  27                  498  37                  498  47                  645 
+8                   302  TST1                 58  28                  498  TST2                150  48                  645 
+ARM1                302  19                   58  ARM2                498  39                  150  ARM3                645 
+10                  302  20                    0  30                  498  40                    0  50                  645 
+
+
+
+Block Current     Total  Block Current     Total  Block Current     Total  
+51                  645  61                  831  71          1       391 
+52                  645  62          1       831  72                  390 
+53                  645  63                  830  73                  390 
+54                  645  64                  830  74                  390 
+55                  645  65                  390  75                  390 
+TST3                178  66                  390  76                  390 
+57                  178  CVK                 440  77                    1 
+58                    0  68         49       440  78                    1 
+KMM                 831  69                  391  79                    1 
+60                  831  70                  391 
+
+
+
+          --Avg-Util-During--                                                               
+Facility  Total  Avail  Unavl     Entries    Average   Current  Percent  Seizing  Preempting
+           Time   Time   Time               Time/Xact   Status   Avail     Xact      Xact   
+  RTERM1  0.506                       303      29.556    AVAIL               93 
+   RARM1  0.458                       302      26.858    AVAIL                  
+  RTERM2  0.988                       499      35.062    AVAIL               20 
+   RARM2  0.784                       498      27.886    AVAIL                  
+  RTERM3  0.987                       646      27.049    AVAIL                3 
+   RARM3  0.000                       645       0.000    AVAIL                  
+    RKMM  0.093                       831       1.978    AVAIL                5 
+    RCVK  0.988                       391      44.723    AVAIL               14 
+
+
+
+   Queue     Maximum      Average       Total        Zero     Percent      Average      $Average     Qtable     Current
+            Contents     Contents      Entries     Entries     Zeros      Time/Unit    Time/Unit     Number    Contents
+  QTERM1          21        3.102         303          91       30.0       181.267       259.076                      0
+   QARM1           1        0.071         302         164       54.3         4.148         9.078                      0
+  QTERM2          31       25.106         529           5        0.9       840.406       848.426                     30
+   QARM2           1        0.038         498         347       69.7         1.347         4.443                      0
+  QTERM3          20       16.517         664         467       70.3       440.491      1484.700                     18
+   QARM3           1        0.000         645         645      100.0         0.000         0.000                      0
+    QKMM           2        0.003         831         778       93.6         0.071         1.116                      0
+    QCVK          58       40.559         440           4        0.9      1632.295      1647.270                     49
+
+Non-zero Fullword Savevalues:  (NAME : VALUE)
+
+   ARMOB:         800, CVKCOUNT:         390,     ARM1:          59,     ARM2:         150,     ARM3:         181
+
+
+
+  Random    Antithetic     Initial     Current      Sample   Chi-Square
+  Stream      Variates    Position    Position       Count   Uniformity
+       1           OFF      100000      104606        4606      0.87
+
+
+
+Status of Common Storage
+
+   16368 bytes available
+   13632 in use
+   13792 used (max)
+
+Simulation complete.  Absolute Clock: 17707.7106
+
+
+
+Total Block Executions: 32534
+
+Blocks / second:        16552531
+
+Microseconds / Block:   0.06
+
+
+
+Elapsed Time Used (Sec)
+ 
+Pass1:           0.00
+Sym/Xref         0.00
+Pass2:           0.00
+Load/Ctrl:       0.00
+Execution:       0.00
+Output:          0.00
+---------------------
+Total:           0.00

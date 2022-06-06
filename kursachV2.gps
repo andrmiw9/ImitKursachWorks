@@ -1,27 +1,134 @@
        SIMULATE
+       REALLOCATE COM,30000
        
+       INITIAL X$ARMOB,0 счетчик обраб-ых первым и вторым арм
+       INITIAL X$ARM1,0 счетчик обраб-ых на цвк из первого т-ала
+       INITIAL X$ARM2,0 счетчик обраб-ых на цвк из второго т-ала
+       INITIAL X$ARM3,0 счетчик обраб-ых на цвк из третього т-ала
+       INITIAL X$CVKCOUNT,0 счетчик обраб-ых на цвк
        
-       
+ARMTIME FUNCTION RN1,D2
+0.2,17/1,30
+
+
+TOBKMM FUNCTION P1,E3
+1,FN$T1KMM/2,FN$T2KMM/3,2
+
+T1KMM FUNCTION RN1,D2
+0.3,4/1,2
+
+T2KMM FUNCTION RN1,D2
+0.4,3/1,1
+
+
+FMETKI FUNCTION P1,E3
+1,TERM1/2,TERM2/3,TERM3
+      
+PLUSER FUNCTION P1,E3
+1,ARM1/2,ARM2/3,ARM3
+     
+CVKPRIOR FUNCTION P1,E3
+1,20/2,30/3,40     
+
        
        GENERATE 93,,120,50
-T1     QUEUE QT1
-       SEIZE RRR
-	   DEPART QT1
-	   ADVANCE 5
-	   RELEASE RRR
-	   
+TERM1  QUEUE QTERM1
+       SEIZE RTERM1
+       DEPART QTERM1
+       ADVANCE 30,10
+       RELEASE RTERM1
+       
+       PRIORITY 50
+       TEST NE P2,1,TST1   если были на цвк, то уходим на проверку
+ARM1   ASSIGN 2,0 обнуляем метку цвк
+       QUEUE QARM1
+       SEIZE RARM1
+       DEPART QARM1
+       ADVANCE FN$ARMTIME
+       RELEASE RARM1
+       SAVEVALUE ARMOB+,1
+       ASSIGN 1,1
+       TRANSFER .7,KMM,TERM1
+       
+TST1   PRIORITY 60	
+       TEST GE Q$QARM1,1,ARM1 если очередь содержит хотя бы одну з-ку
+       TERMINATE
        
        
        GENERATE 110,10,,32
-T2  
+TERM2  QUEUE QTERM2
+       SEIZE RTERM2
+       DEPART QTERM2
+       ADVANCE 35,12
+       RELEASE RTERM2
        
+       PRIORITY 50
+       TEST NE P2,1,TST2   если были на цвк, то уходим на проверку
+ARM2   ASSIGN 2,0 обнуляем метку цвк
+       QUEUE QARM2
+       SEIZE RARM2
+       DEPART QARM2
+       ADVANCE FN$ARMTIME
+       RELEASE RARM2
+       SAVEVALUE ARMOB+,1
+       ASSIGN 1,2
+       TRANSFER .7,KMM,TERM2
        
+TST2   PRIORITY 60
+       TEST GE Q$QARM2,1,ARM2 если очередь содержит хотя бы одну з-ку
+       TERMINATE
        
        
        GENERATE 145,18,,20
-T3       
+TERM3  QUEUE QTERM3
+       SEIZE RTERM3
+       DEPART QTERM3
+       ADVANCE 27,5
+       RELEASE RTERM3       
        
-       GENERATE 12000
+       PRIORITY 50
+       TEST NE P2,1,TST3   если были на цвк, то уходим на проверку
+ARM3   ASSIGN 2,0 обнуляем метку цвк
+       QUEUE QARM3
+       SEIZE RARM3
+       DEPART QARM3
+       RELEASE RARM3
+       ASSIGN 1,3
+       TRANSFER .7,KMM,TERM3
+       
+TST3   PRIORITY 60 восстановление приор-а если пришли из цвк
+       TEST GE Q$QARM3,1,ARM3 если очередь содержит хотя бы одну з-ку
+       TERMINATE
+       
+       
+KMM    QUEUE QKMM
+       SEIZE RKMM
+       DEPART QKMM
+       
+       ADVANCE FN$TOBKMM
+       RELEASE RKMM
+       TEST E  P2,1,CVK уходим на цвк если не были
+       PRIORITY 60
+       TRANSFER ,FN$FMETKI
+       
+       
+CVK    PRIORITY FN$CVKPRIOR
+       QUEUE QCVK
+       SEIZE RCVK
+       DEPART QCVK
+       ADVANCE 45,10
+       RELEASE RCVK
+       ASSIGN 2,1 помечаем что были на ЦВК
+       
+       SAVEVALUE FN$PLUSER+,1
+       SAVEVALUE CVKCOUNT+,1
+       
+       TRANSFER ,KMM
+       
+       
+       
+       GENERATE ,,,1
+       TEST GE X$ARMOB,800
        TERMINATE 1
        START 1
        END
