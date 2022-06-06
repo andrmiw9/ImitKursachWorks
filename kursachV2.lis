@@ -1,0 +1,74 @@
+    Student GPSS/H Release 3.70 (CT256)     30 May 2022   13:42:26     File: kursachV2.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+        1     1                        SIMULATE
+        2     2                        
+        3     3                        
+        4     4                        
+        5     5                        
+        6     6              1         GENERATE 93,,120,50
+        7     7              2  T1     QUEUE Q1
+        8     8              3         SEIZE 
+                                             +
+*** ERROR  47 - Facility number unspecified
+ 
+        9     9                        
+       10    10                        
+       11    11              4         GENERATE 110,10,,32
+       12    12                 T2  
+                                    +
+*** ERROR  4 - Unrecognizable statement
+ 
+       13    13                        
+       14    14                        
+       15    15                        
+       16    16                        
+       17    17              5         GENERATE 145,18,,20
+       18    18                 T3       
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       19    19                        
+       20    20                        
+       21    20                 	END		(COMPILER-GENERATED STATEMENT.  YOU FORGOT THIS.)
+ 
+*** WARNING  5 - Unexpected end-of-file in source stream
+ 
+
+Entity Dictionary (in ascending order by entity number; "*" => value conflict.)
+
+           Queues: 1
+
+
+*** Warning: The following entities have been defined but not explicitly referenced:
+
+           Blocks:  T1      
+
+Symbol   Value   EQU Defns  Context      References by Statement Number
+ 
+T1           2           7  Block       
+ 
+1            1              Queue            7
+
+
+
+Storage Requirements (Bytes)
+
+Compiled Code:      146
+Compiled Data:      120
+Miscellaneous:        0
+Entities:          1616
+Common:           10000
+-----------------------
+Total:            11882
+
+
+
+GPSS/H Model Size:
+
+Control Statements      2
+Blocks                  5
+
+
+3 Syntactic errors

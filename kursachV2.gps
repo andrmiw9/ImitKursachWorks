@@ -4,18 +4,22 @@
        
        
        GENERATE 93,,120,50
-       QUEUE Q1
-       SEIZE 
+T1     QUEUE QT1
+       SEIZE RRR
+	   DEPART QT1
+	   ADVANCE 5
+	   RELEASE RRR
+	   
        
        
        GENERATE 110,10,,32
-       
+T2  
        
        
        
        
        GENERATE 145,18,,20
-       
+T3       
        
        GENERATE 12000
        TERMINATE 1

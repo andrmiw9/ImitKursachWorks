@@ -1,0 +1,397 @@
+    Student GPSS/H Release 3.70 (CT256)     30 May 2022   13:41:24     File: kursachV1.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+        1     1                 SIMULATE
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+        2     2                 REALLOCATE COM,30000
+                                           +
+*** ERROR  4 - Unrecognizable statement
+ 
+        3     3                  
+        4     4                 INITIAL X$DEN1,0
+                                               +
+*** ERROR  237 - This statement can only be used within a report.
+ 
+        5     5                 INITIAL X$DEN2,0
+                                               +
+*** ERROR  237 - This statement can only be used within a report.
+ 
+        6     6                 INITIAL X$DEN3,0
+                                               +
+*** ERROR  237 - This statement can only be used within a report.
+ 
+        7     7                  
+        8     8                 TTIME FUNCTION RN1,D2
+        9     9                 .65,40/1,30
+       10    10                 ARMTIME FUNCTION RN1,D2
+       11    11                 .3,22/1,15
+       12    12                 PRTKMM FUNCTION P1,D6
+       13    13                 1,10/2,20/3,30/4,10/5,20/6,30
+       14    14                 FKMM FUNCTION P1,D3
+       15    15                 1,4/2,3/3,2
+       16    16                 RRR FUNCTION P1,E6
+       17    17                 1,CVK/2,CVK/3,CVK/4,TERM1/5,TERM2/6,TERM3
+       18    18                 DENVALUE FUNCTION P1,E3
+       19    19                 1,DEN1/2,DEN2/3,DEN3
+       20    20                  
+       21    21                 GENERATE 120,55
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       22    22              1  TERM1 QUEUE QTERM1
+       23    23                 SEIZE RTERM1
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       24    24                 DEPART QTERM1
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       25    25                 ADVANCE FN$TTIME
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       26    26                 RELEASE RTERM1
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+
+    Student GPSS/H Release 3.70 (CT256)     30 May 2022   13:41:24     File: kursachV1.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+       27    27                 QUEUE QARM1
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       28    28                 SEIZE RARM1
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       29    29                 DEPART QARM1
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       30    30                 PRIORITY 10
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       31    31                 ADVANCE FN$ARMTIME
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       32    32                 RELEASE RARM1
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       33    33                 ASSIGN 1,1
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       34    34                 TRANSFER .3,TERM1,KMM
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       35    35                  
+       36    36                 GENERATE 110,,100,35
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       37    37              2  TERM2 QUEUE QTERM2
+       38    38                 SEIZE RTERM2
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       39    39                 DEPART QTERM2
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       40    40                 ADVANCE FN$TTIME
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       41    41                 RELEASE RTERM2
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+
+    Student GPSS/H Release 3.70 (CT256)     30 May 2022   13:41:24     File: kursachV1.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+       42    42                 QUEUE QARM2
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       43    43                 SEIZE RARM2
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       44    44                 DEPART QARM2
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       45    45                 PRIORITY 20
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       46    46                 ADVANCE FN$ARMTIME
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       47    47                 RELEASE RARM2
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       48    48                 ASSIGN 1,2
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       49    49                 TRANSFER .3,TERM2,KMM
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       50    50                  
+       51    51                 GENERATE 144,,,44
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       52    52              3  TERM3 QUEUE QTERM3
+       53    53                 SEIZE RTERM3
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       54    54                 DEPART QTERM3
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       55    55                 ADVANCE FN$TTIME
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       56    56                 RELEASE RTERM3
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+
+    Student GPSS/H Release 3.70 (CT256)     30 May 2022   13:41:24     File: kursachV1.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+       57    57                 QUEUE QARM3
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       58    58                 SEIZE RARM3
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       59    59                 DEPART QARM3
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       60    60                 PRIORITY 30
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       61    61                 ADVANCE FN$ARMTIME
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       62    62                 RELEASE RARM3
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       63    63                 ASSIGN 1,3
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       64    64                 TRANSFER .3,TERM3,KMM
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       65    65                  
+       66    66                  
+       67    67              4  KMM QUEUE QKMM
+       68    68                 SEIZE RKMM
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       69    69                 DEPART QKMM
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       70    70                 PRIORITY FN$PRTKMM
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       71    71                 ADVANCE FN$FKMM
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       72    72                 RELEASE RKMM
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+
+    Student GPSS/H Release 3.70 (CT256)     30 May 2022   13:41:24     File: kursachV1.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+       73    73                 TRANSFER ,FN$RRR
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       74    74                  
+       75    75              5  CVK TEST L Q$QCVK,5,DENY
+       76    76                 QUEUE QCVK
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       77    77                 SEIZE RCVK
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       78    78                 DEPART QCVK
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       79    79                 PRIORITY 50
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       80    80                 ADVANCE 55,8
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       81    81                 RELEASE RCVK
+                                        +
+*** ERROR  4 - Unrecognizable statement
+ 
+       82    82                 ASSIGN 1+,3
+                                       +
+*** ERROR  4 - Unrecognizable statement
+ 
+       83    83                 TRANSFER ,KMM
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       84    84                  
+       85    85              6  DENY SAVEVALUE FN$DENVALUE+,1
+       86    86                 SAVEVALUE DENALL+,1
+                                          +
+*** ERROR  4 - Unrecognizable statement
+ 
+       87    87                 TERMINATE
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+       88    88                  
+       89    89                 GENERATE 12000
+                                         +
+*** ERROR  4 - Unrecognizable statement
+ 
+
+    Student GPSS/H Release 3.70 (CT256)     30 May 2022   13:41:24     File: kursachV1.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+       90    90                 TERMINATE 1
+                                          +
+*** ERROR  4 - Unrecognizable statement
+ 
+       91    91                 START 1
+                                      +
+*** ERROR  4 - Unrecognizable statement
+ 
+       92    92                 END
+                                   +
+*** ERROR  4 - Unrecognizable statement
+ 
+       93    92                 	END		(COMPILER-GENERATED STATEMENT.  YOU FORGOT THIS.)
+ 
+*** WARNING  5 - Unexpected end-of-file in source stream
+ 
+
+Entity Dictionary (in ascending order by entity number; "*" => value conflict.)
+
+           Queues: 1=QTERM1        2=QTERM2        3=QTERM3        4=QKMM          5=QCVK
+
+        Functions: 1=TTIME         2=ARMTIME       3=PRTKMM        4=FKMM          5=RRR           6=DENVALUE
+
+       Parameters: 1
+
+   Random Numbers: 1
+
+
+*** Error: The following entities are undefined:
+
+        Absolutes:  DEN1      DEN2      DEN3    
+
+
+*** Warning: The following entities have been defined but not explicitly referenced:
+
+           Blocks:  CVK       KMM       TERM1     TERM2     TERM3   
+
+        Functions:  ARMTIME   FKMM      PRTKMM    RRR       TTIME   
+
+Symbol   Value   EQU Defns  Context      References by Statement Number
+ 
+CVK          5              Absolute        17    17    17
+DEN1                 UNDEF  Absolute        19
+DEN2                 UNDEF  Absolute        19
+DEN3                 UNDEF  Absolute        19
+TERM1        1              Absolute        17
+TERM2        2              Absolute        17
+TERM3        3              Absolute        17
+ 
+CVK          5          75  Block       
+DENY         6          85  Block           75
+KMM          4          67  Block       
+TERM1        1          22  Block       
+TERM2        2          37  Block       
+TERM3        3          52  Block       
+ 
+QCVK         5              Queue           75
+QKMM         4              Queue           67
+QTERM1       1              Queue           22
+QTERM2       2              Queue           37
+QTERM3       3              Queue           52
+ 
+ARMTIME      2          10  Function    
+DENVALUE     6          18  Function        85
+FKMM         4          14  Function    
+PRTKMM       3          12  Function    
+RRR          5          16  Function    
+TTIME        1           8  Function    
+ 
+1            1              Parameter       12    14    16    18
+ 
+1            1              Random Nmbr      8    10
+
+
+
+Storage Requirements (Bytes)
+
+Compiled Code:      872
+Compiled Data:      208
+Miscellaneous:        0
+Entities:           878
+Common:           10000
+-----------------------
+Total:            11958
+
+
+
+GPSS/H Model Size:
+
+Control Statements      7
+Blocks                  6
+
+
+64 Syntactic errors
+
+3 Definition errors
