@@ -1,0 +1,1 @@
+gpssh.exe kursachV4.gps

@@ -1,138 +1,149 @@
-    Student GPSS/H Release 3.70 (CT256)     31 May 2022   20:27:46     File: vlad_course.gps
+    Student GPSS/H Release 3.70 (CT256)      7 Jun 2022   23:16:58     File: vlad_course.gps
 
     Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
  
         1     1                 	SIMULATE
-        2     2                 	REALLOCATE COM,30000
+        2     2                 	REALLOCATE COM,32720
         3     3                  
-        4     4                 	INITIAL X$ENDALL,250
-        5     5                 	INITIAL X$NUM,4
-        6     6                        INITIAL X$COU1,1
-        7     7                        INITIAL X$COU2,1
-        8     8                        INITIAL X$COU3,1
-        9     9                        INITIAL X$COUN1,1
-       10    10                        INITIAL X$COUN2,1
-       11    11                        INITIAL X$COUN3,1
-       12    12                        INITIAL X$CON1,1
-       13    13                        INITIAL X$CON2,1
-       14    14                        INITIAL X$CON3,1
-       15    15                  
-       16    16                 TTIME  FUNCTION RN1,D2
-       17    17                 .3,30/1,35
-       18    18                 PKMM   FUNCTION RN1,D2
-       19    19                 .6,4/1,2
-       20    20                 FKMM   FUNCTION P1,E3
-       21    21                 1,2/2,FN$PKMM/3,1
-       22    22                 TERM	FUNCTION P1,E3
-       23    23                 1,TERM1/2,TERM2/3,TERM3
-       24    24                  
-       25    25              1  	GENERATE 140,35
-       26    26              2  TERM1  PRIORITY 35
-       27    27              3  	ASSIGN 1,1
-       28    28              4  	SAVEVALUE COUN3+,1
-       29    29              5  	TEST E P3,1,CON1       проверка прохода ЦВК
-       30    30              6  	SAVEVALUE COU1+,1      добавление внутреннего счетчика
-       31    31              7  	TEST GE COU1,NUM,CON1   проверка счетчика на каждую 4-ую заявку
-       32    32              8  	SAVEVALUE CTERM1+,1    увлечение глобального счетчика на 1
-       33    33              9  	SAVEVALUE COU1,0
-       34    34             10  	TERMINATE           уничтожение заявки
-       35    35                        
-       36    36             11  CON1   ASSIGN 2,0
-       37    37             12  	QUEUE QTERM1
-       38    38             13  	SEIZE RTERM1
-       39    39             14  	DEPART QTERM1
-       40    40             15  	ADVANCE FN$TTIME
-       41    41             16  	RELEASE RTERM1
-       42    42                  
-       43    43             17  ARM1   PRIORITY 30
-       44    44             18   	QUEUE QARM1
-       45    45             19         SEIZE RARM1
-       46    46             20  	DEPART QARM1
-       47    47             21  	ADVANCE 20,4
-       48    48             22  	RELEASE RARM1
-       49    49             23         TRANSFER .3,TERM1,LKMM
-       50    50                        
-       51    51             24  	GENERATE 190,10
-       52    52             25  TERM2  PRIORITY 25
-       53    53             26  	ASSIGN 1,2
-       54    54             27         TEST E P2,1,CON2 
-       55    55             28  	SAVEVALUE END2+,1      добавление внутреннего счетчика
-       56    56             29  	TEST E X$END2,4,CON2   проверка счетчика на каждую 4-ую заявку
+        4     4                 TTIME  FUNCTION RN1,D2
+        5     5                 .3,30/1,35
+        6     6                 PKMM   FUNCTION RN1,D2
+        7     7                 .6,4/1,2
+        8     8                 FKMM   FUNCTION P1,E3
+        9     9                 1,2/2,FN$PKMM/3,1
+       10    10                 TERM	FUNCTION P1,E3
+       11    11                 1,TERM1/2,TERM2/3,TERM3
+       12    12                 PRIO FUNCTION P1,E3
+       13    13                 1,50/2,45/3,40
+       14    14                  
+       15    15                 	INITIAL X$ENDALL,0
+       16    16                 	INITIAL X$CTERM1,0
+       17    17                 	INITIAL X$CTERM2,0
+       18    18                 	INITIAL X$CTERM3,0
+       19    19                 	INITIAL X$END1,0
+       20    20                 	INITIAL X$END2,0
+       21    21                 	INITIAL X$END3,0
+       22    22                  
+       23    23              1  	GENERATE 140,35
+       24    24              2  	ASSIGN 1,1              флаг о нахождении в ARM 1
+       25    25              3  TERM1 TEST E P2,1,CON1      проверка прохода ЦВК
+       26    26              4  	PRIORITY 50             установка приоритета
+       27    27              5  	SAVEVALUE END1+,1       добавление внутреннего счетчика
+       28    28              6  	TEST GE X$END1,4,CON1   проверка счетчика на каждую 4-ую заявку
+       29    29              7  	SAVEVALUE CTERM1+,1     подсчет количества заявок идущих на удаление
+       30    30              8  	SAVEVALUE END1,0        обнуление внутреннего счетчика
+       31    31              9  	TRANSFER ,DEL           передача на уничтожение заявки
+       32    32                  
+       33    33             10  CON1 ASSIGN 2,0             обнуление флага о прохождении ЦВК
+       34    34             11  	QUEUE QTERM1
+       35    35             12  	SEIZE RTERM1
+       36    36             13  	DEPART QTERM1
+       37    37             14  	ADVANCE FN$TTIME        время выполнения заявки на терминале 1
+       38    38             15  	PRIORITY 48             установка приортета
+       39    39             16  	RELEASE RTERM1
+       40    40                  
+       41    41             17  ARM1 QUEUE QARM1
+       42    42             18  	SEIZE RARM1
+       43    43             19  	DEPART QARM1
+       44    44             20  	ADVANCE 20,4            время выполенния заявки на АРМ 1 
+       45    45             21  	RELEASE RARM1
+       46    46             22  	PRIORITY 47             установка приортита
+       47    47             23      TRANSFER .3,TERM1,KMM   
+       48    48                  
+       49    49             24  	GENERATE 190,10
+       50    50             25  	ASSIGN 1,2              флаг о нахождении в терминале 2
+       51    51             26  TERM2 TEST E P2,1,CON2      проверка прохода ЦВК
+       52    52             27      PRIORITY 50             установка приоритета
+       53    53             28  	SAVEVALUE END2+,1       добавление внутреннего счетчика
+       54    54             29  	TEST GE X$END2,4,CON2   проверка счетчика на каждую 4-ую заявку 
+       55    55             30  	SAVEVALUE CTERM2+,1     подсчет количества заявок идущих на удаление
+       56    56             31  	SAVEVALUE END2,0        обнуление внутреннего счетчика
 
-    Student GPSS/H Release 3.70 (CT256)     31 May 2022   20:27:46     File: vlad_course.gps
+    Student GPSS/H Release 3.70 (CT256)      7 Jun 2022   23:16:58     File: vlad_course.gps
 
     Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
  
-       57    57             30  	SAVEVALUE CTERM2+,1    увлечение глобального счетчика на 1
-       58    58             31  	TRANSFER ,DEL
-       59    59                  
-       60    60             32  CON2   QUEUE QTERM2
-       61    61             33  	SEIZE RTERM2
-       62    62             34  	DEPART QTERM2
-       63    63             35  	ADVANCE FN$TTIME
-       64    64             36  	RELEASE RTERM2
-       65    65                  
-       66    66             37  ARM2   PRIORITY 30
-       67    67             38         QUEUE QARM2
-       68    68             39  	SEIZE RARM2
-       69    69             40  	DEPART QARM2
-       70    70             41  	ADVANCE 25,5
-       71    71             42  	RELEASE RARM2
-       72    72             43         TRANSFER .3,TERM2,LKMM
-       73    73                  
-       74    74             44  	GENERATE 230,10
-       75    75             45  TERM3  PRIORITY 15
-       76    76             46         ASSIGN 1,3
-       77    77             47         TEST E P2,1,CON3
-       78    78             48         SAVEVALUE END3+,1      добавление внутреннего счетчика
-       79    79             49  	TEST E X$END3,4,CON3   проверка счетчика на каждую 4-ую заявку
-       80    80             50  	SAVEVALUE CTERM3+,1    увлечение глобального счетчика на 1
-       81    81             51  	TRANSFER ,DEL
-       82    82                  
-       83    83             52  CON3   QUEUE QTERM3
-       84    84             53  	SEIZE RTERM3
-       85    85             54  	DEPART QTERM3
-       86    86             55  	ADVANCE FN$TTIME
-       87    87             56  	RELEASE RTERM3
-       88    88                 	   
-       89    89             57  ARM3   PRIORITY 30
-       90    90             58  	QUEUE QARM3
-       91    91             59  	SEIZE RARM3
-       92    92             60  	DEPART QARM3
-       93    93             61  	ADVANCE 28,8
-       94    94             62  	RELEASE RARM3
-       95    95             63         TRANSFER .3,TERM3,LKMM
-       96    96                  
-       97    97             64  LKMM   LINK CUKMM,FIFO,KMM
-       98    98                  
-       99    99             65  KMM    SEIZE RKMM
-      100   100             66         ADVANCE FN$FKMM
-      101   101             67  	RELEASE RKMM
-      102   102             68  	UNLINK CUKMM,KMM,1
+       57    57             32  	TRANSFER ,DEL           передача на уничтожение заявки
+       58    58                  
+       59    59             33  CON2 ASSIGN 2,0             обнуление флага о прохождении ЦВК
+       60    60             34      QUEUE QTERM2
+       61    61             35  	SEIZE RTERM2
+       62    62             36  	DEPART QTERM2
+       63    63             37  	ADVANCE FN$TTIME        время выполнения заявки на терминале 2
+       64    64             38  	PRIORITY 48             установка приортета
+       65    65             39  	RELEASE RTERM2
+       66    66                  
+       67    67             40  ARM2 QUEUE QARM2
+       68    68             41  	SEIZE RARM2
+       69    69             42  	DEPART QARM2
+       70    70             43  	ADVANCE 25,5            время выполенния заявки на АРМ 2
+       71    71             44  	RELEASE RARM2
+       72    72             45  	PRIORITY 44             установка приортита
+       73    73             46      TRANSFER .3,TERM2,KMM
+       74    74                  
+       75    75             47  	GENERATE 230,10
+       76    76             48  	ASSIGN 1,3              флаг о нахождении в ARM 3
+       77    77             49  TERM3 TEST E P2,1,CON3      проверка прохода ЦВК
+       78    78             50      PRIORITY 50             установка приоритета
+       79    79             51      SAVEVALUE END3+,1       добавление внутреннего счетчика
+       80    80             52  	TEST E X$END3,4,CON3    проверка счетчика на каждую 4-ую заявку
+       81    81             53  	SAVEVALUE CTERM3+,1     подсчет количества заявок идущих на удаление
+       82    82             54  	SAVEVALUE END3,0        обнуление внутреннего счетчика
+       83    83             55  	TRANSFER ,DEL           передача на уничтожение заявки
+       84    84                  
+       85    85             56  CON3 ASSIGN 2,0             обнуление флага о прохождении ЦВК
+       86    86             57      QUEUE QTERM3
+       87    87             58  	SEIZE RTERM3
+       88    88             59  	DEPART QTERM3
+       89    89             60  	ADVANCE FN$TTIME        время выполнения заявки на терминале 3
+       90    90             61  	PRIORITY 48             установка приоритета
+       91    91             62  	RELEASE RTERM3
+       92    92                 	   
+       93    93             63  ARM3 QUEUE QARM3
+       94    94             64  	SEIZE RARM3
+       95    95             65  	DEPART QARM3
+       96    96             66  	ADVANCE 28,8            время выполенния заявки на АРМ 3
+       97    97             67  	RELEASE RARM3           
+       98    98             68  	PRIORITY 39             установка приоритета
+       99    99             69      TRANSFER .3,TERM3,KMM
+      100   100                  
+      101   101             70  KMM SPLIT 1,CPY             создание копии транзакта
+      102   102             71  	LINK CKMM,FIFO          вход в цепь пользователя
       103   103                  
-      104   104             69  CVK    QUEUE QCVK
-      105   105             70  	SEIZE RCVK
-      106   106             71  	DEPART QCVK
-      107   107             72  	ADVANCE 48,7
-      108   108             73  	RELEASE RCVK
-      109   109             74  	PRIORITY FN$TERM
-      110   110             75  	ASSIGN 2,1
-      111   111             76  	ASSIGN 3,1
-      112   112             77  	SAVEVALUE ENDALL-,1
+      104   104             72  CPY ASSIGN 3,1              флаг о том, что транзакт - копия
+      105   105             73  	TRANSFER ,UNLI
+      106   106                  
+      107   107             74  SZ  SEIZE RKMM
+      108   108             75      ADVANCE FN$FKMM         
+      109   109             76  	RELEASE RKMM
+      110   110                 	
+      111   111             77  UNLI UNLINK CKMM,SZ,1       выпусакем тразакты из цепи пользователя
+      112   112             78  	TEST NE P3,1,DEL        проверка является ли траназкт копией
 
-    Student GPSS/H Release 3.70 (CT256)     31 May 2022   20:27:46     File: vlad_course.gps
+    Student GPSS/H Release 3.70 (CT256)      7 Jun 2022   23:16:58     File: vlad_course.gps
 
     Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
  
-      113   113             78  	TRANSFER ,LKMM
-      114   114                  
-      115   115             79  DEL    TERMINATE
-      116   116                        
-      117   117             80  	GENERATE ,,,1
-      118   118             81  	TEST E X$ENDALL,0
-      119   119             82  	TERMINATE 1
-      120   120                 	START 1
-      121   121                 	END
+      113   113             79  	TEST E P2,1,CVK         проверка был ли транзанкт на ЦВК
+      114   114             80  	TRANSFER ,FN$TERM       переход на реминал 
+      115   115                  
+      116   116             81  CVK QUEUE QCVK
+      117   117             82  	SEIZE RCVK
+      118   118             83  	DEPART QCVK
+      119   119             84  	ADVANCE 48,7            время выполнения заявки на ЦВК
+      120   120             85  	RELEASE RCVK
+      121   121             86  	PRIORITY FN$PRIO        назначение приоритета в соответствии с терм
+      122   122             87  	ASSIGN 2,1              флаг о прохождении ЦВК
+      123   123             88  	SAVEVALUE ENDALL+,1     увелечении общего счетчика
+      124   124             89  	TRANSFER ,KMM           переход на KMM
+      125   125                  
+      126   126             90  DEL TERMINATE               удаление заявки
+      127   127                  
+      128   128             91  	GENERATE ,,,1           генерация по одному транзакту
+      129   129             92  	TEST E X$ENDALL,270     проверка на условие окончания моделирования
+      130   130             93  	TERMINATE 1
+      131   131                 	START 1
+      132   132                 	END
 
 Entity Dictionary (in ascending order by entity number; "*" => value conflict.)
 
@@ -142,13 +153,12 @@ Entity Dictionary (in ascending order by entity number; "*" => value conflict.)
            Queues: 1=QTERM1        2=QARM1         3=QTERM2        4=QARM2         5=QTERM3        6=QARM3         
                    7=QCVK
 
-        Functions: 1=TTIME         2=PKMM          3=FKMM          4=TERM
+        Functions: 1=TTIME         2=PKMM          3=FKMM          4=TERM          5=PRIO
 
- Fullword Savexes: 1=ENDALL        2=NUM           3=COU1          4=COU2          5=COU3          6=COUN1         
-                   7=COUN2         8=COUN3         9=CTERM1        10=END2         11=CON1         12=CTERM2       
-                   13=END3         14=CTERM3       32=CON2         52=CON3
+ Fullword Savexes: 1=ENDALL        2=CTERM1        3=CTERM2        4=CTERM3        5=END1          6=END2          
+                   7=END3
 
-      User Chains: 1=CUKMM
+      User Chains: 1=CKMM
 
        Parameters: 1               2               3
 
@@ -157,192 +167,180 @@ Entity Dictionary (in ascending order by entity number; "*" => value conflict.)
 
 *** Warning: The following entities have been defined but not explicitly referenced:
 
-           Blocks:  ARM1      ARM2      ARM3      CVK     
+           Blocks:  ARM1      ARM2      ARM3    
 
 Symbol   Value   EQU Defns  Context      References by Statement Number
  
-COU1         3              Absolute        31
-NUM          2              Absolute        31
-TERM1        2              Absolute        23
-TERM2       25              Absolute        23
-TERM3       45              Absolute        23
+TERM1        3              Absolute        11
+TERM2       26              Absolute        11
+TERM3       49              Absolute        11
  
-ARM1        17          43  Block       
-ARM2        37          66  Block       
-ARM3        57          89  Block       
-CON1        11          36  Block           29    31
-CON2        32          60  Block           54    56
-CON3        52          83  Block           77    79
-CVK         69         104  Block       
-DEL         79         115  Block           58    81
-KMM         65          99  Block           97   102
-LKMM        64          97  Block           49    72    95   113
-TERM1        2          26  Block           49
-TERM2       25          52  Block           72
-TERM3       45          75  Block           95
+ARM1        17          41  Block       
+ARM2        40          67  Block       
+ARM3        63          93  Block       
+CON1        10          33  Block           25    28
+CON2        33          59  Block           51    54
+CON3        56          85  Block           77    80
+CPY         72         104  Block          101
+CVK         81         116  Block          113
+DEL         90         126  Block           31    57    83   112
+KMM         70         101  Block           47    73    99   124
+SZ          74         107  Block          111
+TERM1        3          25  Block           47
+TERM2       26          51  Block           73
+TERM3       49          77  Block           99
+UNLI        77         111  Block          105
  
-RARM1        2              Facility        45    48
+RARM1        2              Facility        42    45
 RARM2        4              Facility        68    71
-RARM3        6              Facility        91    94
-RCVK         8              Facility       105   108
-RKMM         7              Facility        99   101
-RTERM1       1              Facility        38    41
-RTERM2       3              Facility        61    64
-RTERM3       5              Facility        84    87
+RARM3        6              Facility        94    97
+RCVK         8              Facility       117   120
+RKMM         7              Facility       107   109
+RTERM1       1              Facility        35    39
+RTERM2       3              Facility        61    65
+RTERM3       5              Facility        87    91
  
-QARM1        2              Queue           44    46
+QARM1        2              Queue           41    43
 QARM2        4              Queue           67    69
-QARM3        6              Queue           90    92
-QCVK         7              Queue          104   106
-QTERM1       1              Queue           37    39
+QARM3        6              Queue           93    95
+QCVK         7              Queue          116   118
+QTERM1       1              Queue           34    36
 QTERM2       3              Queue           60    62
-QTERM3       5              Queue           83    85
+QTERM3       5              Queue           86    88
  
-FKMM         3          20  Function       100
-PKMM         2          18  Function        21
-TERM         4          22  Function       109
-TTIME        1          16  Function        40    63    86
+FKMM         3           8  Function       108
+PKMM         2           6  Function         9
+PRIO         5          12  Function       121
+TERM         4          10  Function       114
+TTIME        1           4  Function        37    63    89
  
-CON1        11              Fullword Svx    12
-CON2        32              Fullword Svx    13
-CON3        52              Fullword Svx    14
-COU1         3              Fullword Svx     6    30    33
-COU2         4              Fullword Svx     7
-COU3         5              Fullword Svx     8
-COUN1        6              Fullword Svx     9
-COUN2        7              Fullword Svx    10
-COUN3        8              Fullword Svx    11    28
-CTERM1       9              Fullword Svx    32
-CTERM2      12              Fullword Svx    57
-CTERM3      14              Fullword Svx    80
-END2        10              Fullword Svx    55    56
-END3        13              Fullword Svx    78    79
-ENDALL       1              Fullword Svx     4   112   118
-NUM          2              Fullword Svx     5
+CTERM1       2              Fullword Svx    16    29
+CTERM2       3              Fullword Svx    17    55
+CTERM3       4              Fullword Svx    18    81
+END1         5              Fullword Svx    19    27    28    30
+END2         6              Fullword Svx    20    53    54    56
+END3         7              Fullword Svx    21    79    80    82
+ENDALL       1              Fullword Svx    15   123   129
+ 
+CKMM         1              User Chain     102   111
+ 
+1            1              Parameter        8    10    12    24    50    76
+2            2              Parameter       25    33    51    59    77    85   113   122
+3            3              Parameter      104   112
+ 
+1            1              Random Nmbr      4     6
 
-Symbol   Value   EQU Defns  Context      References by Statement Number
- 
-CUKMM        1              User Chain      97   102
- 
-1            1              Parameter       20    22    27    53    76
-2            2              Parameter       36    54    77   110
-3            3              Parameter       29   111
- 
-1            1              Random Nmbr     16    18
-
-
-
 Storage Requirements (Bytes)
 
-Compiled Code:     2644
-Compiled Data:      224
+Compiled Code:     3044
+Compiled Data:      244
 Miscellaneous:        0
-Entities:          1336
-Common:           30000
+Entities:          1164
+Common:           32720
 -----------------------
-Total:            34204
+Total:            37172
 
 
 
 GPSS/H Model Size:
 
-Control Statements     18
-Blocks                 82
+Control Statements     15
+Blocks                 93
 
 
 
 Simulation begins.
 
-Relative Clock: 12265.3036   Absolute Clock: 12265.3036
+Relative Clock: 13285.7612   Absolute Clock: 13285.7612
 
 
 
 Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total
-1                    86  CON1                258  21          1       258  31                    0  41          1       233 
-TERM1               258  12                  258  22                  257  CON2                234  42                  232 
-3                   258  13                  258  23                  257  33                  234  43                  232 
-4                   258  14                  258  24                   64  34                  234  44                   53 
-5                   258  15                  258  TERM2               234  35          1       234  TERM3               149 
-6                     0  16                  258  26                  234  36                  233  46                  149 
-7                     0  ARM1                258  27                  234  ARM2                233  47                  149 
-8                     0  18                  258  28                    0  38                  233  48                    0 
-9                     0  19                  258  29                    0  39                  233  49                    0 
-10                    0  20                  258  30                    0  40                  233  50                    0 
+1                    95  11         64       455  21                  389  31                   30  41                  380 
+2                    95  12                  391  22                  389  32                   30  42                  380 
+TERM1               483  13                  391  23                  389  CON2                418  43                  380 
+4                   113  14          1       391  24                   69  34         37       418  44                  380 
+5                   113  15                  390  25                   69  35                  381  45                  380 
+6                   113  16                  390  TERM2               448  36                  381  46                  380 
+7                    28  ARM1                390  27                  122  37          1       381  47                   57 
+8                    28  18                  390  28                  122  38                  380  48                   57 
+9                    28  19                  390  29                  122  39                  380  TERM3               253 
+CON1                455  20          1       390  30                   30  ARM2                380  50                   34 
 
 
 
-Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total  
-51                    0  61          1       149  71                  251  81                    1 
-CON3                149  62                  148  72          1       251  82                    1 
-53                  149  63                  148  73                  250 
-54                  149  LKMM                449  74                  250 
-55                  149  KMM                 449  75                  250 
-56                  149  66          1       449  76                  250 
-ARM3                149  67                  448  77                  250 
-58                  149  68                  448  78                  250 
-59                  149  CVK       197       448  DEL                   0 
-60                  149  70                  251  80                    1 
+Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total
+51                   34  61                  244  71                  588  CVK        47       318  91                    1 
+52                   34  62                  244  CPY                 588  82                  271  92                    1 
+53                    8  ARM3                244  73                  588  83                  271  93                    1 
+54                    8  64                  244  SZ                  588  84          1       271 
+55                    8  65                  244  75          1       588  85                  270 
+CON3                245  66          1       244  76                  587  86                  270 
+57                  245  67                  243  UNLI               1175  87                  270 
+58                  245  68                  243  78                 1175  88                  270 
+59                  245  69                  243  79                  587  89                  270 
+60          1       245  KMM                1176  80                  269  DEL                 654 
 
 
 
           --Avg-Util-During--                                                               
 Facility  Total  Avail  Unavl     Entries    Average   Current  Percent  Seizing  Preempting
            Time   Time   Time               Time/Xact   Status   Avail     Xact      Xact   
-  RTERM1  0.708                       258      33.663    AVAIL                  
-   RARM1  0.419                       258      19.938    AVAIL              204 
-  RTERM2  0.641                       234      33.580    AVAIL              202 
-   RARM2  0.474                       233      24.965    AVAIL              199 
-  RTERM3  0.409                       149      33.658    AVAIL                  
-   RARM3  0.337                       149      27.708    AVAIL              203 
-    RKMM  0.055                       449       1.501    AVAIL               11 
-    RCVK  0.977                       251      47.718    AVAIL                3 
+  RTERM1  0.985                       391      33.479    AVAIL              248 
+   RARM1  0.589                       390      20.049    AVAIL              234 
+  RTERM2  0.965                       381      33.634    AVAIL              316 
+   RARM2  0.711                       380      24.849    AVAIL                  
+  RTERM3  0.618                       245      33.510    AVAIL              794 
+   RARM3  0.513                       244      27.947    AVAIL              778 
+    RKMM  0.103                       588       2.325    AVAIL              118 
+    RCVK  0.974                       271      47.763    AVAIL              172 
 
 
 
    Queue     Maximum      Average       Total        Zero     Percent      Average      $Average     Qtable     Current
             Contents     Contents      Entries     Entries     Zeros      Time/Unit    Time/Unit     Number    Contents
-  QTERM1           3        0.307         258          99       38.4        14.584        23.664                      0
-   QARM1           1        0.000         258         258      100.0         0.000         0.000                      0
-  QTERM2           3        0.228         234         103       44.0        11.929        21.309                      0
-   QARM2           1        0.000         233         233      100.0         0.000         0.000                      0
-  QTERM3           2        0.037         149         111       74.5         3.033        11.894                      0
-   QARM3           1        0.001         149         143       96.0         0.065         1.602                      0
-    QCVK         198       97.163         448           2        0.4      2660.120      2672.049                    197
+  QTERM1          66       30.821         455           5        1.1       899.969       909.969                     64
+   QARM1           1        0.000         390         390      100.0         0.000         0.000                      0
+  QTERM2          38       17.466         418          10        2.4       555.151       568.758                     37
+   QARM2           1        0.000         380         380      100.0         0.000         0.000                      0
+  QTERM3           3        0.223         245         116       47.3        12.113        23.006                      0
+   QARM3           1        0.004         244         225       92.2         0.191         2.450                      0
+    QCVK          50       24.771         318           3        0.9      1034.912      1044.768                     47
 
 User Chain   Entries    Average      Average     Current     Maximum
                        Time/Xact    Contents    Contents    Contents
-   CUKMM          13       0.808       0.001           0           1 
+    CKMM         588       0.000       0.000           0           1 
 
 
 
 Non-zero Fullword Savevalues:  (NAME : VALUE)
 
-     NUM:           4,     COU1:           1,     COU2:           1,     COU3:           1,    COUN1:           1,
-   COUN2:           1,    COUN3:         259,     CON1:           1,     CON2:           1,     CON3:           1
+  ENDALL:         270,   CTERM1:          28,   CTERM2:          30,   CTERM3:           8,     END1:           1,
+    END2:           2,     END3:           2
 
 
 
   Random    Antithetic     Initial     Current      Sample   Chi-Square
   Stream      Variates    Position    Position       Count   Uniformity
-       1           OFF      100000      102440        2440      0.66
+       1           OFF      100000      103783        3783      0.88
 
 
 
 Status of Common Storage
 
-    3032 bytes available
-   26968 in use
-   27112 used (max)
+   10128 bytes available
+   22592 in use
+   22832 used (max)
 
-Simulation complete.  Absolute Clock: 12265.3036
+Simulation complete.  Absolute Clock: 13285.7612
 
 
 
-Total Block Executions: 15267
+Total Block Executions: 28085
 
-Blocks / second:        12872681
+Blocks / second:        19252124
 
-Microseconds / Block:   0.08
+Microseconds / Block:   0.05
 
 
 

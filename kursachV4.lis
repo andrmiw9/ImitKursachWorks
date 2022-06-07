@@ -1,0 +1,354 @@
+    Student GPSS/H Release 3.70 (CT256)      8 Jun 2022   01:20:27     File: kursachV4.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+        1     1                        SIMULATE
+        2     2                        REALLOCATE COM,30000
+        3     3                        
+        4     4                        INITIAL X$ARMOB,0 счетчик обраб-ых первым и вторым арм
+        5     5                        INITIAL X$ARM1,0 счетчик обраб-ых на цвк из первого т-ала
+        6     6                        INITIAL X$ARM2,0 счетчик обраб-ых на цвк из второго т-ала
+        7     7                        INITIAL X$ARM3,0 счетчик обраб-ых на цвк из третього т-ала
+        8     8                        INITIAL X$CVKCOUNT,0 счетчик обраб-ых на цвк
+        9     9                        
+       10    10                 ARMTIME FUNCTION RN1,D2
+       11    11                 0.2,17/1,30
+       12    12                  
+       13    13                  
+       14    14                 TOBKMM FUNCTION P1,E3
+       15    15                 1,FN$T1KMM/2,FN$T2KMM/3,2
+       16    16                  
+       17    17                 T1KMM FUNCTION RN1,D2
+       18    18                 0.3,4/1,2
+       19    19                  
+       20    20                 T2KMM FUNCTION RN1,D2
+       21    21                 0.4,3/1,1
+       22    22                  
+       23    23                  
+       24    24                 FMETKI FUNCTION P1,E3
+       25    25                 1,PRET1/2,PRET2/3,PRET3
+       26    26                       
+       27    27                 PLUSER FUNCTION P1,E3
+       28    28                 1,ARM1/2,ARM2/3,ARM3
+       29    29                      
+       30    30                 CVKPRIOR FUNCTION P1,E3
+       31    31                 1,20/2,30/3,40     
+       32    32                        
+       33    33              1         GENERATE 93,,120,50
+       34    34              2  PRET1  TEST E P2,1,TERM1 если были на цвк
+       35    35              3         PRIORITY 60 уравниваем приоритет после диверсификации на цвк
+       36    36                        
+       37    37              4  TERM1  QUEUE QTERM1
+       38    38              5         SEIZE RTERM1
+       39    39              6         DEPART QTERM1
+       40    40              7         ADVANCE 1
+       41    41              8         RELEASE RTERM1
+       42    42                        
+       43    43              9         PRIORITY 50 равноприоритетность
+       44    44             10         TEST NE P2,1,TST1   если были на цвк, то уходим на проверку
+       45    45             11  ARM1   ASSIGN 2,0 обнуляем метку цвк
+       46    46             12         QUEUE QARM1
+       47    47             13         SEIZE RARM1
+       48    48             14         DEPART QARM1
+       49    49             15         ADVANCE FN$ARMTIME
+       50    50             16         RELEASE RARM1
+       51    51             17         SAVEVALUE ARMOB+,1
+       52    52             18         ASSIGN 1,1
+       53    53             19         TRANSFER .7,KMM,PRET1
+       54    54                        
+       55    55             20  TST1   TEST GE Q$QARM1,1,ARM1 если очередь содержит хотя бы одну з-ку
+       56    56             21         TRANSFER ,DEL
+
+    Student GPSS/H Release 3.70 (CT256)      8 Jun 2022   01:20:27     File: kursachV4.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+       57    57                  
+       58    58                        
+       59    59             22         GENERATE 110,10,,32
+       60    60             23  PRET2  TEST E P2,1,TERM2 если были на цвк
+       61    61             24         PRIORITY 60 уравниваем приоритет после диверсификации на цвк
+       62    62                        
+       63    63             25  TERM2  QUEUE QTERM2
+       64    64             26         SEIZE RTERM2
+       65    65             27         DEPART QTERM2
+       66    66             28         ADVANCE 35,12
+       67    67             29         RELEASE RTERM2
+       68    68                        
+       69    69             30         PRIORITY 50 равноприоритетность
+       70    70             31         TEST NE P2,1,TST2   если были на цвк, то уходим на проверку
+       71    71             32  ARM2   ASSIGN 2,0 обнуляем метку цвк
+       72    72             33         QUEUE QARM2
+       73    73             34         SEIZE RARM2
+       74    74             35         DEPART QARM2
+       75    75             36         ADVANCE FN$ARMTIME
+       76    76             37         RELEASE RARM2
+       77    77             38         SAVEVALUE ARMOB+,1
+       78    78             39         ASSIGN 1,2
+       79    79             40         TRANSFER .7,KMM,PRET2
+       80    80                        
+       81    81             41  TST2   TEST GE Q$QARM2,1,ARM2 если очередь содержит хотя бы одну з-ку
+       82    82             42         TRANSFER ,DEL
+       83    83                        
+       84    84                        
+       85    85             43         GENERATE 145,18,,20
+       86    86             44  PRET3  TEST E P2,1,TERM3 если были на цвк
+       87    87             45         PRIORITY 60 уравниваем приоритет после диверсификации на цвк
+       88    88                               
+       89    89             46  TERM3  QUEUE QTERM3
+       90    90             47         SEIZE RTERM3
+       91    91             48         DEPART QTERM3
+       92    92             49         ADVANCE 27,5
+       93    93             50         RELEASE RTERM3       
+       94    94                        
+       95    95             51         PRIORITY 50
+       96    96             52         TEST NE P2,1,TST3   если были на цвк, то уходим на проверку
+       97    97             53  ARM3   ASSIGN 2,0 обнуляем метку цвк
+       98    98             54         QUEUE QARM3
+       99    99             55         SEIZE RARM3
+      100   100             56         DEPART QARM3
+      101   101             57         RELEASE RARM3
+      102   102             58         ASSIGN 1,3
+      103   103             59         TRANSFER .7,KMM,PRET3
+      104   104                        
+      105   105             60  TST3   TEST GE Q$QARM3,1,ARM3 если очередь содержит хотя бы одну з-ку
+      106   106             61         TRANSFER ,DEL
+      107   107                        
+      108   108                        
+      109   109             62  KMM    QUEUE QKMM
+      110   110             63         SEIZE RKMM
+      111   111             64         DEPART QKMM
+      112   112             65         ADVANCE FN$TOBKMM вызов главной функции
+
+    Student GPSS/H Release 3.70 (CT256)      8 Jun 2022   01:20:27     File: kursachV4.gps
+
+    Line# Stmt#  If Do  Block#  *Loc	Operation	A,B,C,D,E,F,G	Comments  
+ 
+      113   113             66         RELEASE RKMM
+      114   114                        
+      115   115             67         TEST E  P2,1,CVK уходим на цвк если не были
+      116   116             68         TRANSFER ,FN$FMETKI возврат на терминалы
+      117   117                        
+      118   118                        
+      119   119             69  CVK    QUEUE QCVK
+      120   120             70         SEIZE RCVK
+      121   121             71         DEPART QCVK
+      122   122             72         ADVANCE 45,10
+      123   123             73         RELEASE RCVK
+      124   124             74         ASSIGN 2,1 помечаем что были на ЦВК
+      125   125                        
+      126   126             75         SAVEVALUE FN$PLUSER+,1 прибавляем к нужному счетчику
+      127   127             76         SAVEVALUE CVKCOUNT+,1 прибавляем к счетчику цвк
+      128   128                        
+      129   129             77         PRIORITY FN$CVKPRIOR
+      130   130             78         TRANSFER ,KMM
+      131   131                        
+      132   132             79   DEL   TERMINATE      
+      133   133                        
+      134   134             80         GENERATE ,,,1
+      135   135             81         TEST GE X$ARMOB,800
+      136   136             82         TERMINATE 1
+      137   137                        START 1
+      138   138                        END
+
+Entity Dictionary (in ascending order by entity number; "*" => value conflict.)
+
+       Facilities: 1=RTERM1        2=RARM1         3=RTERM2        4=RARM2         5=RTERM3        6=RARM3         
+                   7=RKMM          8=RCVK
+
+           Queues: 1=QTERM1        2=QARM1         3=QTERM2        4=QARM2         5=QTERM3        6=QARM3         
+                   7=QKMM          8=QCVK
+
+        Functions: 1=ARMTIME       2=TOBKMM        3=T1KMM         4=T2KMM         5=FMETKI        6=PLUSER        
+                   7=CVKPRIOR
+
+ Fullword Savexes: 1=ARMOB         2=CVKCOUNT      11=ARM1         32=ARM2         53=ARM3
+
+       Parameters: 1               2
+
+   Random Numbers: 1
+
+Symbol   Value   EQU Defns  Context      References by Statement Number
+ 
+ARM1        11              Absolute        28
+ARM2        32              Absolute        28
+ARM3        53              Absolute        28
+PRET1        2              Absolute        25
+PRET2       23              Absolute        25
+PRET3       44              Absolute        25
+ 
+ARM1        11          45  Block           55
+ARM2        32          71  Block           81
+ARM3        53          97  Block          105
+CVK         69         119  Block          115
+DEL         79         132  Block           56    82   106
+KMM         62         109  Block           53    79   103   130
+PRET1        2          34  Block           53
+PRET2       23          60  Block           79
+PRET3       44          86  Block          103
+TERM1        4          37  Block           34
+TERM2       25          63  Block           60
+TERM3       46          89  Block           86
+TST1        20          55  Block           44
+TST2        41          81  Block           70
+TST3        60         105  Block           96
+ 
+RARM1        2              Facility        47    50
+RARM2        4              Facility        73    76
+RARM3        6              Facility        99   101
+RCVK         8              Facility       120   123
+RKMM         7              Facility       110   113
+RTERM1       1              Facility        38    41
+RTERM2       3              Facility        64    67
+RTERM3       5              Facility        90    93
+ 
+QARM1        2              Queue           46    48    55
+QARM2        4              Queue           72    74    81
+QARM3        6              Queue           98   100   105
+QCVK         8              Queue          119   121
+QKMM         7              Queue          109   111
+QTERM1       1              Queue           37    39
+QTERM2       3              Queue           63    65
+QTERM3       5              Queue           89    91
+ 
+ARMTIME      1          10  Function        49    75
+CVKPRIOR     7          30  Function       129
+FMETKI       5          24  Function       116
+PLUSER       6          27  Function       126
+T1KMM        3          17  Function        15
+T2KMM        4          20  Function        15
+TOBKMM       2          14  Function       112
+ 
+ARM1        11              Fullword Svx     5
+ARM2        32              Fullword Svx     6
+ARM3        53              Fullword Svx     7
+ARMOB        1              Fullword Svx     4    51    77   135
+CVKCOUNT     2              Fullword Svx     8   127
+ 
+1            1              Parameter       14    24    27    30    52    78   102
+2            2              Parameter       34    44    45    60    70    71    86    96    97   115   124
+
+Symbol   Value   EQU Defns  Context      References by Statement Number
+ 
+1            1              Random Nmbr     10    17    20
+
+
+
+Storage Requirements (Bytes)
+
+Compiled Code:     2778
+Compiled Data:      256
+Miscellaneous:        0
+Entities:          1511
+Common:           30000
+-----------------------
+Total:            34545
+
+
+
+GPSS/H Model Size:
+
+Control Statements     15
+Blocks                 82
+
+
+
+Simulation begins.
+
+Relative Clock: 15630.0240   Absolute Clock: 15630.0240
+
+
+
+Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total
+1                    50  ARM1                363  21                   38  31                  438  TST2                104 
+PRET1               401  12                  363  22                   32  ARM2                438  42                    0 
+3                   104  13                  363  PRET2               444  33                  438  43                   20 
+TERM1               401  14                  363  24                  104  34                  438  PRET3               498 
+5                   401  15                  363  TERM2       5       444  35                  438  45                  131 
+6                   401  16                  363  26                  439  36          1       438  TERM3       3       498 
+7                   401  17                  363  27                  439  37                  437  47                  495 
+8                   401  18                  363  28          1       439  38                  437  48                  495 
+9                   401  19                  363  29                  438  39                  437  49          1       495 
+10                  401  TST1                104  30                  438  40                  437  50                  494 
+
+
+
+Block Current     Total  Block Current     Total  Block Current     Total  Block Current     Total  
+51                  494  61                    0  71                  340  81                    1 
+52                  494  KMM                 731  72          1       340  82                    1 
+ARM3                494  63                  731  73                  339 
+54                  494  64                  731  74                  339 
+55                  494  65          1       731  75                  339 
+56                  494  66                  730  76                  339 
+57                  494  67                  730  77                  339 
+58                  494  68                  339  78                  339 
+59                  494  CVK        51       391  DEL                  38 
+TST3                127  70                  340  80                    1 
+
+
+
+          --Avg-Util-During--                                                               
+Facility  Total  Avail  Unavl     Entries    Average   Current  Percent  Seizing  Preempting
+           Time   Time   Time               Time/Xact   Status   Avail     Xact      Xact   
+  RTERM1  0.026                       401       1.000    AVAIL                  
+   RARM1  0.634                       363      27.314    AVAIL                  
+  RTERM2  0.988                       439      35.179    AVAIL               81 
+   RARM2  0.769                       438      27.438    AVAIL               12 
+  RTERM3  0.859                       495      27.119    AVAIL                7 
+   RARM3  0.000                       494       0.000    AVAIL                  
+    RKMM  0.100                       731       2.130    AVAIL               22 
+    RCVK  0.984                       340      45.250    AVAIL               64 
+
+
+
+   Queue     Maximum      Average       Total        Zero     Percent      Average      $Average     Qtable     Current
+            Contents     Contents      Entries     Entries     Zeros      Time/Unit    Time/Unit     Number    Contents
+  QTERM1           1        0.000         401         396       98.8         0.008         0.635                      0
+   QARM1           9        1.323         363         142       39.1        56.949        93.540                      0
+  QTERM2          28       13.900         444           4        0.9       489.318       493.766                      5
+   QARM2           1        0.033         438         327       74.7         1.183         4.669                      0
+  QTERM3          15        3.458         498         373       74.9       108.527       432.370                      3
+   QARM3           1        0.000         494         494      100.0         0.000         0.000                      0
+    QKMM           1        0.004         731         686       93.8         0.076         1.234                      0
+    QCVK          55       35.114         391           2        0.5      1403.648      1410.865                     51
+
+Non-zero Fullword Savevalues:  (NAME : VALUE)
+
+   ARMOB:         800, CVKCOUNT:         339,     ARM1:         104,     ARM2:         104,     ARM3:         131
+
+
+
+  Random    Antithetic     Initial     Current      Sample   Chi-Square
+  Stream      Variates    Position    Position       Count   Uniformity
+       1           OFF      100000      103876        3876      0.90
+
+
+
+Status of Common Storage
+
+   21232 bytes available
+    8768 in use
+    9552 used (max)
+
+Simulation complete.  Absolute Clock: 15630.0240
+
+
+
+Total Block Executions: 30376
+
+Blocks / second:        22211172
+
+Microseconds / Block:   0.05
+
+
+
+Elapsed Time Used (Sec)
+ 
+Pass1:           0.00
+Sym/Xref         0.00
+Pass2:           0.00
+Load/Ctrl:       0.00
+Execution:       0.00
+Output:          0.00
+---------------------
+Total:           0.00
